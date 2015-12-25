@@ -15,6 +15,7 @@ class UsersController < ApplicationController
     # using "user_params" restricts what can be passed into signup form
     @user = User.new(user_params) 
     if @user.save 
+      log_in @user
       flash[:success] = "Welcome to the Sample App!"
       redirect_to @user
     else
