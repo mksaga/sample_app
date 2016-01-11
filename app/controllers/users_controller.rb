@@ -18,7 +18,8 @@ class UsersController < ApplicationController
   end
   
   def show
-    @user = User.find_by(params[:id])
+    @user = User.find_by(id: params[:id])
+    
     # if 'debugger' below is uncommented, rails server shows a console
     # that allows checking which user is displaying, their properties, etc.
     # debugger
@@ -27,10 +28,10 @@ class UsersController < ApplicationController
   def create
     # using "user_params" restricts what can be passed into signup form
     @user = User.new(user_params) 
-    if @user.save 
-      log_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+    if @user.save
+      @user.send_activation_email
+      flash[:info] = "Please check your email to activate your account."
+      redirect_to root_url
     else
       render 'new'
     end
